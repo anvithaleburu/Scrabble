@@ -8,9 +8,9 @@ public class Scrabble {
 	HashMap<String, Integer> wordMap=new HashMap<String, Integer>();
 	String letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	int[] value=new int[]{1,3,3,2,1,4,2,4,1,8,5,1,3,1,1,3,10,1,1,1,1,4,4,8,4,10};
-	
+	Set<String> permutes=new HashSet<String>();
 	public static String res="";
-	public int score=0;
+	public static int score=0;
 	
 	public void permute(String str, int l, int r)
     {
@@ -18,6 +18,7 @@ public class Scrabble {
         {
         	if(wordMap.containsKey(str))
         	{
+        		permutes.add(str);
         		if(score<wordMap.get(str))
         		{
         			score=wordMap.get(str);
@@ -105,9 +106,16 @@ public class Scrabble {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		scrabble.printCombinations(characters.toCharArray(), characters.length() );
+		String ch;
+		for(char c='A'; c<='Z';c++)
+		{
+			ch=characters+c;
+			scrabble.printCombinations(ch.toCharArray(), ch.length() );
+			scrabble.permute(ch,0,ch.length()-1);
+		}
+		
 		System.out.println(res);
-    	//System.out.println(score);
+    	System.out.println(score);
 	}
 
 }
