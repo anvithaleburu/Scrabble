@@ -8,21 +8,40 @@ public class Scrabble {
 	HashMap<String, Integer> wordMap=new HashMap<String, Integer>();
 	String letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	int[] value=new int[]{1,3,3,2,1,4,2,4,1,8,5,1,3,1,1,3,10,1,1,1,1,4,4,8,4,10};
-	Set<String> permutes=new HashSet<String>();
+	HashMap<String, Integer> permutes=new HashMap<String, Integer>();
 	public static String res="";
 	public static int score=0;
-	
+	public static int tempcount=0;
+	public static int[] alphas;
+	public static int[] alphas_1;
+	public static char k;
 	public void permute(String str, int l, int r)
     {
         if (l == r)
         {
         	if(wordMap.containsKey(str))
         	{
-        		permutes.add(str);
-        		if(score<wordMap.get(str))
-        		{
+        		
+        		permutes.put(str, wordMap.get(str));
+        		if(score<wordMap.get(str) && res.length()<=str.length())
+        		{	
+        			alphas_1=new int[26];
         			score=wordMap.get(str);
         			res=str;
+        			for(int i=0;i<str.length();i++)
+    				{
+    					alphas_1[k-'A']+=1;
+    				}
+        			if(alphas_1[k-'A']>=tempcount)
+        			{
+        				score=score-value[k-'A'];
+        			}
+        			/*for(int i=0;i<26;i++)
+        			{
+        				System.out.print(alphas[i]);
+        				System.out.print(alphas_1[i]);
+        			}
+        			System.out.println();*/
         		}
         	}
         	
@@ -106,10 +125,21 @@ public class Scrabble {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		String ch;
 		
+		for(char c='A'; c<='Z';c++)
+		{
+		alphas= new int[26];	
+			k=c;
+			ch=characters+c;
+				for(int i=0;i<characters.length();i++)
+				{
+					alphas[characters.charAt(i)-'A']++;
+				}
+		  tempcount=alphas[c-'A']+1;	
 			scrabble.printCombinations(ch.toCharArray(), ch.length() );
 			scrabble.permute(ch,0,ch.length()-1);
-		
+		}
 		
 		System.out.println(res);
     	System.out.println(score);
